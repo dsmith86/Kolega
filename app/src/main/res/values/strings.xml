@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Kolega</string>
+
+    <!-- Configuration -->
+    <string name="parse_application_id">4rZVijDe9wNownT9U9ouQEY1ZgxQsCiSzrAIXF7A</string>
+    <string name="parse_client_key">qFttCFs42phv02xtEaUJVWMi6dPGjYyVaAp9MhJL</string>
+
+    <!-- Generic -->
+    <string name="generic_yes">Yes</string>
+    <string name="generic_no">No</string>
+    <string name="generic_ok">OK</string>
+
+    <!-- Menus -->
+    <string name="action_settings">Settings</string>
+    <string name="action_sign_out">Sign Out</string>
+
+    <!-- Register Activity -->
+    <string name="title_activity_register">Sign Up</string>
+    <string name="register_hint_username">Username</string>
+    <string name="register_hint_password">Password</string>
+    <string name="register_hint_confirm">Confirm</string>
+    <string name="register_button_register">Register</string>
+    <string name="register_button_sign_in">Already have an account? Sign In</string>
+
+    <!-- Sign In Activity -->
+    <string name="sign_in_button">Sign In</string>
+    <string name="sign_in_error">Invalid account credentials.</string>
+
+    <!-- Main Activity -->
+    <string name="title_activity_main">MainActivity</string>
+    <string name="confirm_sign_out">Are you sure you want to sign out?</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_sign_in">SignInActivity</string>
+</resources>
