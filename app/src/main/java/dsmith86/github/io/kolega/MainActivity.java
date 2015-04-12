@@ -1,22 +1,50 @@
 package dsmith86.github.io.kolega;
 
 import android.app.AlertDialog;
+import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.ParseUser;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements
+        ActionBar.TabListener, ViewPager.OnPageChangeListener {
+
+    private ViewPager viewPager;
+    private ActionBar actionBar;
+    private TabsPagerAdapter tabsPagerAdapter;
+
+    private String[] tabs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tabs = getResources().getStringArray(R.array.tab_items);
+
+        viewPager = (ViewPager)findViewById(R.id.viewPager);
+        actionBar = getSupportActionBar();
+        tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+
+        viewPager.setAdapter(tabsPagerAdapter);
+        viewPager.setOnPageChangeListener(this);
+
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        for (String tab : tabs) {
+            actionBar.addTab(actionBar.newTab().setText(tab).setTabListener(this));
+        }
     }
 
 
@@ -60,5 +88,64 @@ public class MainActivity extends ActionBarActivity {
         ParseUser.logOut();
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
+    }
+
+    // TabListener Interface
+
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
+
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction fragmentTransaction) {
+
+    }
+
+    // OnPageChangeListener Interface
+
+
+    @Override
+    public void onPageSelected(int position) {
+        actionBar.setSelectedNavigationItem(position);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    private class TabsPagerAdapter extends FragmentPagerAdapter {
+        public TabsPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                case 1:
+                case 2:
+                    return new ProfileFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return tabs.length;
+        }
     }
 }

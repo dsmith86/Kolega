@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="dsmith86.github.io.kolega.ProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|top">
+
+        <ImageView
+            android:layout_width="@dimen/size_profile_image"
+            android:layout_height="@dimen/size_profile_image"
+            android:id="@+id/profileImageView"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/description_profile_image"
+            android:background="@drawable/avatar"
+            android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/label_profile_username"
+            android:id="@+id/textView2"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/label_profile_school"
+            android:id="@+id/textView"
+            android:layout_margin="@dimen/activity_horizontal_margin" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/label_profile_major"
+            android:id="@+id/textView3"
+            android:layout_margin="@dimen/activity_horizontal_margin" />
+    </LinearLayout>
+
+</FrameLayout>

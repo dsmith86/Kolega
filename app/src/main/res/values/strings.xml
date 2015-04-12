@@ -21,6 +21,7 @@
     <string name="register_hint_confirm">Confirm</string>
     <string name="register_button_register">Register</string>
     <string name="register_button_sign_in">Already have an account? Sign In</string>
+    <string name="register_error">Something went wrong, and registration could not be completed.</string>
 
     <!-- Sign In Activity -->
     <string name="sign_in_button">Sign In</string>
@@ -30,6 +31,21 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="confirm_sign_out">Are you sure you want to sign out?</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="tab_profile">Profile</string>
+    <string name="tab_groups">Groups</string>
+    <string name="tab_events">Events</string>
+
+    <string-array name="tab_items">
+        <item>@string/tab_profile</item>
+        <item>@string/tab_groups</item>
+        <item>@string/tab_events</item>
+    </string-array>
+
+    <!-- Profile Fragment -->
+    <string name="description_profile_image">This is your current profile image.</string>
+    <string name="label_profile_username">Username</string>
+    <string name="label_profile_school">School: </string>
+    <string name="label_profile_major">Major: </string>
+
     <string name="title_activity_sign_in">SignInActivity</string>
 </resources>

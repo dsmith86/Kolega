@@ -1,5 +1,6 @@
 package dsmith86.github.io.kolega;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -82,7 +83,11 @@ public class RegisterActivity extends ActionBarActivity {
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Log.d("registrationStatus", "failure");
+                                new AlertDialog.Builder(RegisterActivity.this)
+                                        .setMessage(getResources().getString(R.string.register_error))
+                                        .setPositiveButton(getResources().getString(R.string.generic_ok), null)
+                                        .create()
+                                        .show();
                             }
                         }
                     });
