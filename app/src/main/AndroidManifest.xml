@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".registration.RegisterActivity"
             android:label="@string/title_activity_register" >
         </activity>
         <activity
@@ -31,8 +31,16 @@
         </activity>
         <activity
             android:name=".SignInActivity"
-            android:noHistory="true"
-            android:label="@string/title_activity_sign_in" >
+            android:label="@string/title_activity_sign_in"
+            android:noHistory="true" >
+        </activity>
+        <activity
+            android:name=".registration.SetupActivity"
+            android:label="@string/title_activity_setup" >
+        </activity>
+        <activity
+            android:name=".SchoolSelectActivity"
+            android:label="@string/title_activity_school_select" >
         </activity>
     </application>
 

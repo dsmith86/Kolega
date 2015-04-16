@@ -1,10 +1,9 @@
-package dsmith86.github.io.kolega;
+package dsmith86.github.io.kolega.registration;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +12,11 @@ import android.widget.EditText;
 
 import com.parse.ParseException;
 import com.parse.SignUpCallback;
+
+import dsmith86.github.io.kolega.DispatchActivity;
+import dsmith86.github.io.kolega.ParseInterfaceWrapper;
+import dsmith86.github.io.kolega.R;
+import dsmith86.github.io.kolega.SignInActivity;
 
 
 public class RegisterActivity extends ActionBarActivity {
@@ -77,7 +81,7 @@ public class RegisterActivity extends ActionBarActivity {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                Intent intent = new Intent(RegisterActivity.this, DispatchActivity.class);
+                                Intent intent = new Intent(RegisterActivity.this, SetupActivity.class);
                                 intent.putExtra(DispatchActivity.EXTRA_USERNAME, username);
                                 intent.putExtra(DispatchActivity.EXTRA_PASSWORD, password);
                                 startActivity(intent);

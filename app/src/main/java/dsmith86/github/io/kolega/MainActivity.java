@@ -1,7 +1,6 @@
 package dsmith86.github.io.kolega;
 
 import android.app.AlertDialog;
-import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -15,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.ParseUser;
+
+import dsmith86.github.io.kolega.registration.RegisterActivity;
 
 
 public class MainActivity extends ActionBarActivity implements

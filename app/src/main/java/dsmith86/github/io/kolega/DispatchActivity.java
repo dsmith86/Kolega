@@ -10,6 +10,8 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import dsmith86.github.io.kolega.registration.RegisterActivity;
+
 
 public class DispatchActivity extends ActionBarActivity {
 
