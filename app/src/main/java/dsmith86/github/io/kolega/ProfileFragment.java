@@ -8,8 +8,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
+import org.w3c.dom.Text;
 
 public class ProfileFragment extends Fragment {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,8 +28,18 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        final TextView realNameTextView, schoolTextView, majorTextView;
+
+        realNameTextView = (TextView)view.findViewById(R.id.realNameTextView);
+        schoolTextView = (TextView)view.findViewById(R.id.schoolTextView);
+        majorTextView = (TextView)view.findViewById(R.id.majorTextView);
+
+        ParseUser user = ParseUser.getCurrentUser();
+
+        realNameTextView.setText(user.getString(ParseInterfaceWrapper.KEY_REAL_NAME));
+        schoolTextView.setText(user.getString(ParseInterfaceWrapper.KEY_SCHOOL_NAME));
+        majorTextView.setText(user.getString(ParseInterfaceWrapper.KEY_MAJOR));
+
         return view;
     }
-
-
 }

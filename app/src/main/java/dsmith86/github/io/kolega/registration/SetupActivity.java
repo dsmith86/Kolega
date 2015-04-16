@@ -1,5 +1,6 @@
 package dsmith86.github.io.kolega.registration;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -9,6 +10,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import dsmith86.github.io.kolega.DispatchActivity;
+import dsmith86.github.io.kolega.ParseInterfaceWrapper;
 import dsmith86.github.io.kolega.R;
 import dsmith86.github.io.kolega.SchoolSelectActivity;
 
@@ -34,6 +42,49 @@ public class SetupActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.continueButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser user = ParseUser.getCurrentUser();
+
+                String realName = realNameEditText.getText().toString();
+                String major = majorEditText.getText().toString();
+
+                if (!realName.isEmpty() && !major.isEmpty() && user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME) != null) {
+                    user.put(ParseInterfaceWrapper.KEY_REAL_NAME, realName);
+                    user.put(ParseInterfaceWrapper.KEY_MAJOR, major);
+
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            Intent intent = new Intent(SetupActivity.this, DispatchActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                } else {
+                    new AlertDialog.Builder(SetupActivity.this)
+                            .setMessage(R.string.setup_error_required)
+                            .setPositiveButton(getResources().getString(R.string.generic_ok), null)
+                            .create()
+                            .show();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ParseUser user = ParseUser.getCurrentUser();
+
+        String schoolName = user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME).toString();
+
+        if (!schoolName.isEmpty()) {
+            schoolTextView.setText(schoolName);
+        }
     }
 
 

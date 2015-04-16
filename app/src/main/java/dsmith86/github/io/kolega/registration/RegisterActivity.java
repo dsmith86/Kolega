@@ -1,16 +1,20 @@
 package dsmith86.github.io.kolega.registration;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import dsmith86.github.io.kolega.DispatchActivity;
@@ -19,7 +23,9 @@ import dsmith86.github.io.kolega.R;
 import dsmith86.github.io.kolega.SignInActivity;
 
 
-public class RegisterActivity extends ActionBarActivity {
+public class RegisterActivity extends Activity {
+
+    private final static int ERROR_USERNAME_TAKEN = 202;
 
     private EditText usernameEditText, passwordEditText, confirmEditText;
 
@@ -75,7 +81,7 @@ public class RegisterActivity extends ActionBarActivity {
             password = passwordEditText.getText().toString();
             confirm = confirmEditText.getText().toString();
 
-            if (!username.trim().isEmpty() && !password.trim().isEmpty() && !confirm.trim().isEmpty()) {
+            if (!username.trim().isEmpty() && (!password.trim().isEmpty() || !confirm.trim().isEmpty())) {
                 if (password.equals(confirm)) {
                     ParseInterfaceWrapper.registerUser(username, password, new SignUpCallback() {
                         @Override
@@ -85,16 +91,27 @@ public class RegisterActivity extends ActionBarActivity {
                                 intent.putExtra(DispatchActivity.EXTRA_USERNAME, username);
                                 intent.putExtra(DispatchActivity.EXTRA_PASSWORD, password);
                                 startActivity(intent);
-                                finish();
                             } else {
+                                String message;
+                                if (e.getCode() == ERROR_USERNAME_TAKEN) {
+                                    message = getResources().getString(R.string.register_error_taken);
+                                } else {
+                                    message = getResources().getString(R.string.register_error);
+                                }
                                 new AlertDialog.Builder(RegisterActivity.this)
-                                        .setMessage(getResources().getString(R.string.register_error))
+                                        .setMessage(message)
                                         .setPositiveButton(getResources().getString(R.string.generic_ok), null)
                                         .create()
                                         .show();
                             }
                         }
                     });
+                } else {
+                    new AlertDialog.Builder(RegisterActivity.this)
+                            .setMessage(getResources().getString(R.string.register_error_match))
+                            .setPositiveButton(getResources().getString(R.string.generic_ok), null)
+                            .create()
+                            .show();
                 }
             }
         }

@@ -24,7 +24,9 @@
     <string name="register_hint_confirm">Confirm</string>
     <string name="register_button_register">Register</string>
     <string name="register_button_sign_in">Already have an account? Sign In</string>
-    <string name="register_error">Something went wrong, and registration could not be completed.</string>
+    <string name="register_error">Something went wrong, and registration could not be completed. Please try again.</string>
+    <string name="register_error_taken">That username is already taken. Please try again.</string>
+    <string name="register_error_match">Your passwords don\'t match. Please try again.</string>
 
     <!-- Setup Activity -->
     <string name="setup_real_name">Real name</string>
@@ -32,6 +34,7 @@
     <string name="setup_label_school">School:</string>
     <string name="setup_school_select_button">Select a school</string>
     <string name="setup_continue_button">Continue</string>
+    <string name="setup_error_required">Error. Please provide a real name, a major, and a school.</string>
 
     <!-- School Select Activity -->
     <string name="school_select_button">Select</string>
