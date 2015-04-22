@@ -7,6 +7,15 @@
     android:orientation="vertical"
     tools:context="dsmith86.github.io.kolega.registration.SetupActivity">
 
+    <ImageView
+        android:layout_width="@dimen/size_profile_image"
+        android:layout_height="@dimen/size_profile_image"
+        android:scaleType="centerCrop"
+        android:id="@+id/profileImageView"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/description_profile_image"
+        android:background="@drawable/avatar" />
+
     <EditText
         android:id="@+id/realNameEditText"
         android:layout_width="fill_parent"

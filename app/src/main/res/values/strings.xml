@@ -12,6 +12,7 @@
     <string name="generic_no">No</string>
     <string name="generic_ok">OK</string>
     <string name="generic_none">None</string>
+    <string name="generic_cancel">Cancel</string>
 
     <!-- Menus -->
     <string name="action_settings">Settings</string>
@@ -29,6 +30,9 @@
     <string name="register_error_match">Your passwords don\'t match. Please try again.</string>
 
     <!-- Setup Activity -->
+    <string name="setup_profile_image">Set a profile picture</string>
+    <string name="setup_profile_image_camera">Take a new photo</string>
+    <string name="setup_profile_image_file">Choose an existing photo</string>
     <string name="setup_real_name">Real name</string>
     <string name="setup_major">Major</string>
     <string name="setup_label_school">School:</string>
@@ -62,6 +66,7 @@
     <string name="label_profile_school">School: </string>
     <string name="label_profile_major">Major: </string>
     <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="button_profile_edit">Edit Profile</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

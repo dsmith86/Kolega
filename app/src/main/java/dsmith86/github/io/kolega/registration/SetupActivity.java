@@ -1,19 +1,29 @@
 package dsmith86.github.io.kolega.registration;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaActionSound;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.util.UUID;
 
 import dsmith86.github.io.kolega.DispatchActivity;
 import dsmith86.github.io.kolega.ParseInterfaceWrapper;
@@ -23,6 +33,12 @@ import dsmith86.github.io.kolega.SchoolSelectActivity;
 
 public class SetupActivity extends ActionBarActivity {
 
+    private static final int INTENT_TAKE_PICTURE = 0;
+    private static final int INTENT_IMPORT_PICTURE = 1;
+
+    private Uri imageFileUri;
+
+    ImageView profileImageView;
     EditText realNameEditText, majorEditText;
     TextView schoolTextView;
 
@@ -31,9 +47,45 @@ public class SetupActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
+        profileImageView = (ImageView)findViewById(R.id.profileImageView);
+
         realNameEditText = (EditText)findViewById(R.id.realNameEditText);
         majorEditText = (EditText)findViewById(R.id.majorEditText);
         schoolTextView = (TextView)findViewById(R.id.schoolTextView);
+
+        profileImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(SetupActivity.this)
+                        .setTitle(getResources().getString(R.string.setup_profile_image))
+                        .setPositiveButton(getResources().getString(R.string.setup_profile_image_camera), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String imageFileName= UUID.randomUUID().toString() + ".jpg";
+                                ContentValues contentValues=new ContentValues();
+                                contentValues.put(MediaStore.Images.Media.TITLE, imageFileName);
+                                imageFileUri =getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
+                                Intent i=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                i.putExtra(MediaStore.EXTRA_OUTPUT,imageFileUri);
+                                try {
+                                    startActivityForResult(i,INTENT_TAKE_PICTURE);
+                                }
+                                catch (  ActivityNotFoundException e) {
+                                    Log.e("error", "Could not start a Camera Intent");
+                                }
+                            }
+                        })
+                        .setNeutralButton(getResources().getString(R.string.setup_profile_image_file), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(cameraIntent, INTENT_IMPORT_PICTURE);
+                            }
+                        })
+                        .setNegativeButton(getResources().getString(R.string.generic_cancel), null)
+                        .create().show();
+            }
+        });
 
         findViewById(R.id.schoolSelectButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +124,20 @@ public class SetupActivity extends ActionBarActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case INTENT_TAKE_PICTURE:
+            case INTENT_IMPORT_PICTURE:
+                if (imageFileUri != null) {
+                    profileImageView.setImageURI(imageFileUri);
+                    profileImageView.setBackground(null);
+                }
+        }
     }
 
     @Override
