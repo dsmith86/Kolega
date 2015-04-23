@@ -43,6 +43,10 @@
             android:name=".SchoolSelectActivity"
             android:label="@string/title_activity_school_select" >
         </activity>
+        <activity
+            android:name=".ClassDiscussionActivity"
+            android:label="@string/title_activity_class_discussion" >
+        </activity>
     </application>
 
 </manifest>

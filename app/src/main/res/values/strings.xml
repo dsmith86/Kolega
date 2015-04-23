@@ -53,13 +53,11 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="confirm_sign_out">Are you sure you want to sign out?</string>
     <string name="tab_profile">Profile</string>
-    <string name="tab_groups">Groups</string>
-    <string name="tab_events">Events</string>
+    <string name="tab_classes">Classes</string>
 
     <string-array name="tab_items">
         <item>@string/tab_profile</item>
-        <item>@string/tab_groups</item>
-        <item>@string/tab_events</item>
+        <item>@string/tab_classes</item>
     </string-array>
 
     <!-- Profile Fragment -->
@@ -69,11 +67,19 @@
     <string name="label_profile_major">Major: </string>
     <string name="title_activity_sign_in">SignInActivity</string>
     <string name="button_profile_edit">Edit Profile</string>
+    
+    <!-- Classes Fragment -->
+    <string name="button_classes_new">Add another class</string>
+
+    <!-- Class Discussion Activity -->
+    <string name="class_discussion_message">Enter a message</string>
+    <string name="class_discussion_send">Send</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_setup">SetupActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_school_select">SchoolSelectActivity</string>
+    <string name="title_activity_class_discussion">ClassDiscussionActivity</string>
 
 </resources>

@@ -136,9 +136,9 @@ public class MainActivity extends ActionBarActivity implements
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                case 1:
-                case 2:
                     return new ProfileFragment();
+                case 1:
+                    return new ClassesFragment();
                 default:
                     return null;
             }
