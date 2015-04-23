@@ -15,9 +15,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
@@ -40,7 +42,13 @@ public class ClassesFragment extends ListFragment {
 
         listView.setAdapter(adapter);
 
+        final ParseUser user = ParseUser.getCurrentUser();
+
+        final String schoolName = user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME).toString();
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseInterfaceWrapper.ENTITY_CLASS);
+
+        query.whereEqualTo(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
 
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -66,9 +74,11 @@ public class ClassesFragment extends ListFragment {
                                 final String newClass = newClassEditText.getText().toString();
 
                                 if (!newClass.isEmpty()) {
+
                                     ParseObject newClassObject = new ParseObject(ParseInterfaceWrapper.ENTITY_CLASS);
 
                                     newClassObject.put(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION, newClass);
+                                    newClassObject.put(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
 
                                     newClassObject.saveInBackground(new SaveCallback() {
                                         @Override
