@@ -7,17 +7,33 @@
     android:orientation="vertical"
     tools:context="dsmith86.github.io.kolega.SchoolSelectActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/schoolSelectButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="@string/school_select_button" />
+
+        <Button
+            android:id="@+id/newSchoolButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/school_select_new" />
+
+    </LinearLayout>
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
-    <Button
-        android:id="@+id/schoolSelectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:text="@string/school_select_button" />
+
+
 
 </LinearLayout>

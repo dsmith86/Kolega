@@ -13,6 +13,7 @@
     <string name="generic_ok">OK</string>
     <string name="generic_none">None</string>
     <string name="generic_cancel">Cancel</string>
+    <string name="generic_add">Add</string>
 
     <!-- Menus -->
     <string name="action_settings">Settings</string>
@@ -42,6 +43,7 @@
 
     <!-- School Select Activity -->
     <string name="school_select_button">Select</string>
+    <string name="school_select_new">Add another school</string>
 
     <!-- Sign In Activity -->
     <string name="sign_in_button">Sign In</string>

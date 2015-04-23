@@ -5,6 +5,8 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaActionSound;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -18,11 +20,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 import dsmith86.github.io.kolega.DispatchActivity;
@@ -38,6 +48,8 @@ public class SetupActivity extends ActionBarActivity {
 
     private Uri imageFileUri;
 
+    ParseUser user;
+
     ImageView profileImageView;
     EditText realNameEditText, majorEditText;
     TextView schoolTextView;
@@ -46,6 +58,8 @@ public class SetupActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
+
+        user = ParseUser.getCurrentUser();
 
         profileImageView = (ImageView)findViewById(R.id.profileImageView);
 
@@ -98,8 +112,6 @@ public class SetupActivity extends ActionBarActivity {
         findViewById(R.id.continueButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseUser user = ParseUser.getCurrentUser();
-
                 String realName = realNameEditText.getText().toString();
                 String major = majorEditText.getText().toString();
 
@@ -130,12 +142,41 @@ public class SetupActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
         switch (requestCode) {
             case INTENT_TAKE_PICTURE:
             case INTENT_IMPORT_PICTURE:
                 if (imageFileUri != null) {
                     profileImageView.setImageURI(imageFileUri);
-                    profileImageView.setBackground(null);
+
+                    try {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        InputStream inputStream;
+
+                        inputStream = getContentResolver().openInputStream(imageFileUri);
+                        byte[] buf = new byte[1024];
+
+                        int n;
+
+                        while (-1 != (n = inputStream.read(buf))) {
+                            byteArrayOutputStream.write(buf, 0, n);
+                        }
+
+                        byte[] bytes = byteArrayOutputStream.toByteArray();
+
+                        String imageFilename = String.format("%s%s", ParseInterfaceWrapper.KEY_PROFILE_IMAGE, ".png");
+                        ParseFile image = new ParseFile(imageFilename, bytes);
+
+                        user.put(ParseInterfaceWrapper.KEY_PROFILE_IMAGE, image);
+
+                        user.saveInBackground();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
         }
     }
@@ -144,12 +185,32 @@ public class SetupActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        ParseUser user = ParseUser.getCurrentUser();
+        user = ParseUser.getCurrentUser();
 
         String schoolName = user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME).toString();
+        String realName = user.get(ParseInterfaceWrapper.KEY_REAL_NAME).toString();
+        String major = user.get(ParseInterfaceWrapper.KEY_MAJOR).toString();
+
+        ParseFile profileImage = (ParseFile)user.get(ParseInterfaceWrapper.KEY_PROFILE_IMAGE);
+
+        profileImage.getDataInBackground(new GetDataCallback() {
+            @Override
+            public void done(byte[] bytes, ParseException e) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                profileImageView.setImageBitmap(bitmap);
+            }
+        });
 
         if (!schoolName.isEmpty()) {
             schoolTextView.setText(schoolName);
+        }
+
+        if (!realName.isEmpty()) {
+            realNameEditText.setText(realName);
+        }
+
+        if (!major.isEmpty()) {
+            majorEditText.setText(major);
         }
     }
 
