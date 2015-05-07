@@ -80,6 +80,7 @@
     <!-- Class Discussion Activity -->
     <string name="class_discussion_message">Enter a message</string>
     <string name="class_discussion_send">Send</string>
+    <string name="class_discussion_refresh_button">Refresh</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

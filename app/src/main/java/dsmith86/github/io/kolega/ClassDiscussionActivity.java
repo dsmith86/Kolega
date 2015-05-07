@@ -36,6 +36,7 @@ import java.util.List;
 public class ClassDiscussionActivity extends ActionBarActivity {
 
     ArrayAdapter<String[]> adapter;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class ClassDiscussionActivity extends ActionBarActivity {
         final String schoolName = user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME).toString();
         final String classDescription = getIntent().getExtras().getString(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION);
 
-        ListView listView = (ListView)findViewById(android.R.id.list);
+        listView = (ListView)findViewById(android.R.id.list);
 
         final List<String[]> chatThread = new LinkedList<>();
 
@@ -86,26 +87,7 @@ public class ClassDiscussionActivity extends ActionBarActivity {
 
         listView.setAdapter(adapter);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseInterfaceWrapper.ENTITY_MESSAGE);
-
-        query.whereEqualTo(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
-        query.whereEqualTo(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION, classDescription);
-
-        final ProgressDialog progress = new ProgressDialog(ClassDiscussionActivity.this);
-        progress.setTitle(getResources().getString(R.string.generic_please_wait));
-        progress.setMessage(getResources().getString(R.string.classes_loading));
-        progress.show();
-
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> messages, ParseException e) {
-                for (ParseObject message : messages) {
-                    adapter.add(new String[] {message.getString(ParseInterfaceWrapper.KEY_MESSAGE_CONTENTS),
-                            message.getString(ParseInterfaceWrapper.KEY_USERNAME)});
-                }
-                progress.dismiss();
-            }
-        });
+        fetchMessages(true);
 
         final EditText chatEditText = (EditText)findViewById(R.id.chatEditText);
 
@@ -134,7 +116,40 @@ public class ClassDiscussionActivity extends ActionBarActivity {
         });
     }
 
+    private void fetchMessages(boolean progressDialog) {
+        adapter.clear();
 
+        final ParseUser user = ParseUser.getCurrentUser();
+
+        final String schoolName = user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME).toString();
+        final String classDescription = getIntent().getExtras().getString(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION);
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseInterfaceWrapper.ENTITY_MESSAGE);
+
+        query.whereEqualTo(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
+        query.whereEqualTo(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION, classDescription);
+
+        final ProgressDialog progress = new ProgressDialog(ClassDiscussionActivity.this);
+        progress.setTitle(getResources().getString(R.string.generic_please_wait));
+        progress.setMessage(getResources().getString(R.string.classes_loading));
+
+        if (progressDialog) {
+            progress.show();
+        }
+
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> messages, ParseException e) {
+                for (ParseObject message : messages) {
+                    adapter.add(new String[] {message.getString(ParseInterfaceWrapper.KEY_MESSAGE_CONTENTS),
+                            message.getString(ParseInterfaceWrapper.KEY_USERNAME)});
+                }
+                listView.setSelection(adapter.getCount() - 1);
+
+                progress.dismiss();
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -150,6 +165,10 @@ public class ClassDiscussionActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if (id == R.id.action_refresh) {
+            fetchMessages(false);
+            return true;
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
