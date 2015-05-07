@@ -14,6 +14,7 @@
     <string name="generic_none">None</string>
     <string name="generic_cancel">Cancel</string>
     <string name="generic_add">Add</string>
+    <string name="generic_please_wait">Please Wait</string>
 
     <!-- Menus -->
     <string name="action_settings">Settings</string>
@@ -29,6 +30,7 @@
     <string name="register_error">Something went wrong, and registration could not be completed. Please try again.</string>
     <string name="register_error_taken">That username is already taken. Please try again.</string>
     <string name="register_error_match">Your passwords don\'t match. Please try again.</string>
+    <string name="register_registration_progress">Registration is in progress...</string>
 
     <!-- Setup Activity -->
     <string name="setup_profile_image">Set a profile picture</string>
@@ -40,6 +42,7 @@
     <string name="setup_school_select_button">Select a school</string>
     <string name="setup_continue_button">Continue</string>
     <string name="setup_error_required">Error. Please provide a real name, a major, and a school.</string>
+    <string name="setup_upload_image_progress">Uploading image...</string>
 
     <!-- School Select Activity -->
     <string name="school_select_button">Select</string>
@@ -48,6 +51,7 @@
     <!-- Sign In Activity -->
     <string name="sign_in_button">Sign In</string>
     <string name="sign_in_error">Invalid account credentials.</string>
+    <string name="sign_in_progress">Signing in...</string>
 
     <!-- Main Activity -->
     <string name="title_activity_main">MainActivity</string>
@@ -70,6 +74,7 @@
     
     <!-- Classes Fragment -->
     <string name="button_classes_new">Add another class</string>
+    <string name="classes_loading">Loading classes...</string>
 
     <!-- Class Discussion Activity -->
     <string name="class_discussion_message">Enter a message</string>
@@ -77,9 +82,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_setup">SetupActivity</string>
+    <string name="title_activity_setup">Edit Your Profile</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_school_select">SchoolSelectActivity</string>
-    <string name="title_activity_class_discussion">ClassDiscussionActivity</string>
+    <string name="title_activity_school_select">Select your school</string>
+    <string name="title_activity_class_discussion">Pick a class to see discussion</string>
 
 </resources>

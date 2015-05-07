@@ -1,6 +1,7 @@
 package dsmith86.github.io.kolega;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
@@ -72,6 +73,11 @@ public class SignInActivity extends ActionBarActivity {
             password = passwordEditText.getText().toString();
 
             if (!username.trim().isEmpty() && !password.trim().isEmpty()) {
+                final ProgressDialog progress = new ProgressDialog(SignInActivity.this);
+                progress.setTitle(getResources().getString(R.string.generic_please_wait));
+                progress.setMessage(getResources().getString(R.string.sign_in_progress));
+                progress.show();
+
                 ParseUser.logInInBackground(username, password, new LogInCallback() {
                     @Override
                     public void done(ParseUser parseUser, ParseException e) {
@@ -85,6 +91,7 @@ public class SignInActivity extends ActionBarActivity {
                                     .create()
                                     .show();
                         }
+                        progress.dismiss();
                     }
                 });
             }

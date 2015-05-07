@@ -61,13 +61,15 @@ public class ProfileFragment extends Fragment {
 
         ParseFile profileImage = (ParseFile)user.get(ParseInterfaceWrapper.KEY_PROFILE_IMAGE);
 
-        profileImage.getDataInBackground(new GetDataCallback() {
-            @Override
-            public void done(byte[] bytes, ParseException e) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                profileImageView.setImageBitmap(bitmap);
-            }
-        });
+        if (profileImage != null) {
+            profileImage.getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] bytes, ParseException e) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    profileImageView.setImageBitmap(bitmap);
+                }
+            });
+        }
 
         return view;
     }

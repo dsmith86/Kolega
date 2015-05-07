@@ -44,55 +44,60 @@ public class ClassesFragment extends ListFragment {
 
         final ParseUser user = ParseUser.getCurrentUser();
 
-        final String schoolName = user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME).toString();
+        try {
+            final String schoolName = user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME).toString();
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseInterfaceWrapper.ENTITY_CLASS);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(ParseInterfaceWrapper.ENTITY_CLASS);
 
-        query.whereEqualTo(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
+            query.whereEqualTo(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
 
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> classes, ParseException e) {
-                for (ParseObject _class : classes) {
-                    adapter.add(_class.getString(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION));
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> classes, ParseException e) {
+                    for (ParseObject _class : classes) {
+                        adapter.add(_class.getString(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION));
+                    }
                 }
-            }
-        });
+            });
 
-        view.findViewById(R.id.newClassButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EditText newClassEditText = new EditText(getActivity());
-                newClassEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+            view.findViewById(R.id.newClassButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final EditText newClassEditText = new EditText(getActivity());
+                    newClassEditText.setInputType(InputType.TYPE_CLASS_TEXT);
 
-                new AlertDialog.Builder(getActivity())
-                        .setTitle(getResources().getString(R.string.button_classes_new))
-                        .setView(newClassEditText)
-                        .setPositiveButton(getResources().getString(R.string.generic_add), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                final String newClass = newClassEditText.getText().toString();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(getResources().getString(R.string.button_classes_new))
+                            .setView(newClassEditText)
+                            .setPositiveButton(getResources().getString(R.string.generic_add), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    final String newClass = newClassEditText.getText().toString();
 
-                                if (!newClass.isEmpty()) {
+                                    if (!newClass.isEmpty()) {
 
-                                    ParseObject newClassObject = new ParseObject(ParseInterfaceWrapper.ENTITY_CLASS);
+                                        ParseObject newClassObject = new ParseObject(ParseInterfaceWrapper.ENTITY_CLASS);
 
-                                    newClassObject.put(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION, newClass);
-                                    newClassObject.put(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
+                                        newClassObject.put(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION, newClass);
+                                        newClassObject.put(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
 
-                                    newClassObject.saveInBackground(new SaveCallback() {
-                                        @Override
-                                        public void done(ParseException e) {
-                                            adapter.insert(newClass, 0);
-                                        }
-                                    });
+                                        newClassObject.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                adapter.insert(newClass, 0);
+                                            }
+                                        });
+                                    }
                                 }
-                            }
-                        })
-                        .setNegativeButton(getResources().getString(R.string.generic_cancel), null)
-                        .create().show();
-            }
-        });
+                            })
+                            .setNegativeButton(getResources().getString(R.string.generic_cancel), null)
+                            .create().show();
+                }
+            });
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
 
         return view;
     }

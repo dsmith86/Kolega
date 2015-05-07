@@ -2,19 +2,17 @@ package dsmith86.github.io.kolega.registration;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
-import com.parse.Parse;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import dsmith86.github.io.kolega.DispatchActivity;
@@ -83,6 +81,11 @@ public class RegisterActivity extends Activity {
 
             if (!username.trim().isEmpty() && (!password.trim().isEmpty() || !confirm.trim().isEmpty())) {
                 if (password.equals(confirm)) {
+                    final ProgressDialog progress = new ProgressDialog(RegisterActivity.this);
+                    progress.setTitle(getResources().getString(R.string.generic_please_wait));
+                    progress.setMessage(getResources().getString(R.string.register_registration_progress));
+                    progress.show();
+
                     ParseInterfaceWrapper.registerUser(username, password, new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -104,6 +107,7 @@ public class RegisterActivity extends Activity {
                                         .create()
                                         .show();
                             }
+                            progress.dismiss();
                         }
                     });
                 } else {

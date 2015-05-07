@@ -1,6 +1,7 @@
 package dsmith86.github.io.kolega.registration;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -75,25 +76,17 @@ public class SetupActivity extends ActionBarActivity {
                         .setPositiveButton(getResources().getString(R.string.setup_profile_image_camera), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String imageFileName= UUID.randomUUID().toString() + ".jpg";
-                                ContentValues contentValues=new ContentValues();
+                                String imageFileName = UUID.randomUUID().toString() + ".jpg";
+                                ContentValues contentValues = new ContentValues();
                                 contentValues.put(MediaStore.Images.Media.TITLE, imageFileName);
-                                imageFileUri =getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues);
-                                Intent i=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                i.putExtra(MediaStore.EXTRA_OUTPUT,imageFileUri);
+                                imageFileUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                i.putExtra(MediaStore.EXTRA_OUTPUT, imageFileUri);
                                 try {
-                                    startActivityForResult(i,INTENT_TAKE_PICTURE);
-                                }
-                                catch (  ActivityNotFoundException e) {
+                                    startActivityForResult(i, INTENT_TAKE_PICTURE);
+                                } catch (ActivityNotFoundException e) {
                                     Log.e("error", "Could not start a Camera Intent");
                                 }
-                            }
-                        })
-                        .setNeutralButton(getResources().getString(R.string.setup_profile_image_file), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent cameraIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(cameraIntent, INTENT_IMPORT_PICTURE);
                             }
                         })
                         .setNegativeButton(getResources().getString(R.string.generic_cancel), null)
@@ -146,6 +139,11 @@ public class SetupActivity extends ActionBarActivity {
             return;
         }
 
+        final ProgressDialog progress = new ProgressDialog(SetupActivity.this);
+        progress.setTitle(getResources().getString(R.string.generic_please_wait));
+        progress.setMessage(getResources().getString(R.string.setup_upload_image_progress));
+        progress.show();
+
         switch (requestCode) {
             case INTENT_TAKE_PICTURE:
             case INTENT_IMPORT_PICTURE:
@@ -172,7 +170,12 @@ public class SetupActivity extends ActionBarActivity {
 
                         user.put(ParseInterfaceWrapper.KEY_PROFILE_IMAGE, image);
 
-                        user.saveInBackground();
+                        user.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                progress.dismiss();
+                            }
+                        });
 
                     } catch (Exception e) {
                         e.printStackTrace();

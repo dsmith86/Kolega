@@ -1,14 +1,19 @@
 package dsmith86.github.io.kolega;
 
+import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,12 +25,13 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
 public class ClassDiscussionActivity extends ActionBarActivity {
 
-    ArrayAdapter<String> adapter;
+    ArrayAdapter<String[]> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +45,40 @@ public class ClassDiscussionActivity extends ActionBarActivity {
 
         ListView listView = (ListView)findViewById(android.R.id.list);
 
-        ArrayList<String> chatThread = new ArrayList<>();
+        final List<String[]> chatThread = new LinkedList<>();
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, chatThread);
+
+        adapter = new ArrayAdapter<String[]>(this, android.R.layout.simple_list_item_2, android.R.id.text1, chatThread) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                String[] message = chatThread.get(position);
+                TextView text1 = (TextView)view.findViewById(android.R.id.text1);
+                TextView text2 = (TextView)view.findViewById(android.R.id.text2);
+
+                String username = message[1];
+
+                if (username.equals(user.getUsername())) {
+                    view.setBackgroundColor(Color.parseColor("#2ecc71"));
+
+                    text1.setTextColor(Color.WHITE);
+                    text2.setTextColor(Color.WHITE);
+
+                    text1.setGravity(Gravity.RIGHT);
+                    text2.setGravity(Gravity.RIGHT);
+
+                } else {
+                    view.setBackgroundColor(Color.parseColor("#ecf0f1"));
+                }
+
+                text1.setText(message[0]);
+
+                text2.setText(username);
+
+                return view;
+            }
+        };
 
         listView.setAdapter(adapter);
 
@@ -50,12 +87,19 @@ public class ClassDiscussionActivity extends ActionBarActivity {
         query.whereEqualTo(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
         query.whereEqualTo(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION, classDescription);
 
+        final ProgressDialog progress = new ProgressDialog(ClassDiscussionActivity.this);
+        progress.setTitle(getResources().getString(R.string.generic_please_wait));
+        progress.setMessage(getResources().getString(R.string.classes_loading));
+        progress.show();
+
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> messages, ParseException e) {
                 for (ParseObject message : messages) {
-                    adapter.add(message.getString(ParseInterfaceWrapper.KEY_MESSAGE_CONTENTS));
+                    adapter.add(new String[] {message.getString(ParseInterfaceWrapper.KEY_MESSAGE_CONTENTS),
+                            message.getString(ParseInterfaceWrapper.KEY_USERNAME)});
                 }
+                progress.dismiss();
             }
         });
 
@@ -72,12 +116,13 @@ public class ClassDiscussionActivity extends ActionBarActivity {
                     newMessageObject.put(ParseInterfaceWrapper.KEY_SCHOOL_NAME, schoolName);
                     newMessageObject.put(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION, classDescription);
                     newMessageObject.put(ParseInterfaceWrapper.KEY_MESSAGE_ORIGIN, user.getObjectId());
+                    newMessageObject.put(ParseInterfaceWrapper.KEY_USERNAME, user.getUsername());
 
                     newMessageObject.put(ParseInterfaceWrapper.KEY_MESSAGE_CONTENTS, newMessage);
 
                     newMessageObject.saveInBackground();
 
-                    adapter.add(newMessage);
+                    adapter.add(new String[] {newMessage, user.getUsername()});
 
                     chatEditText.setText("");
                 }

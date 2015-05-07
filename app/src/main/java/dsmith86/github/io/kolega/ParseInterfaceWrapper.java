@@ -14,6 +14,7 @@ public class ParseInterfaceWrapper {
 
     public final static String KEY_SCHOOL_NAME = "schoolName";
     public final static String KEY_CLASS_DESCRIPTION = "classDescription";
+    public final static String KEY_USERNAME = "username";
     public final static String KEY_REAL_NAME = "realName";
     public final static String KEY_MAJOR = "major";
     public final static String KEY_PROFILE_IMAGE = "profileImage";
