@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -87,6 +88,47 @@ public class ClassDiscussionActivity extends ActionBarActivity {
 
         listView.setAdapter(adapter);
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                new AlertDialog.Builder(ClassDiscussionActivity.this)
+                        .setMessage(getResources().getString(R.string.class_discussion_report))
+                        .setNegativeButton(getResources().getString(R.string.generic_cancel), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .setPositiveButton(getResources().getString(R.string.generic_report), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String objectId = adapter.getItem(position)[2];
+
+                                ParseQuery<ParseObject> messageQuery = ParseQuery.getQuery(ParseInterfaceWrapper.ENTITY_MESSAGE);
+
+                                messageQuery.whereEqualTo(ParseInterfaceWrapper.KEY_OBJECT_ID, objectId);
+
+                                messageQuery.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> parseObjects, ParseException e) {
+                                        ParseObject message = parseObjects.get(0);
+
+                                        message.put(ParseInterfaceWrapper.KEY_REPORTED, true);
+                                        message.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                Toast.makeText(ClassDiscussionActivity.this, getResources().getString(R.string.generic_reported), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }).create().show();
+
+                return false;
+            }
+        });
+
         fetchMessages(true);
 
         final EditText chatEditText = (EditText)findViewById(R.id.chatEditText);
@@ -103,12 +145,13 @@ public class ClassDiscussionActivity extends ActionBarActivity {
                     newMessageObject.put(ParseInterfaceWrapper.KEY_CLASS_DESCRIPTION, classDescription);
                     newMessageObject.put(ParseInterfaceWrapper.KEY_MESSAGE_ORIGIN, user.getObjectId());
                     newMessageObject.put(ParseInterfaceWrapper.KEY_USERNAME, user.getUsername());
+                    newMessageObject.put(ParseInterfaceWrapper.KEY_REPORTED, false);
 
                     newMessageObject.put(ParseInterfaceWrapper.KEY_MESSAGE_CONTENTS, newMessage);
 
                     newMessageObject.saveInBackground();
 
-                    adapter.add(new String[] {newMessage, user.getUsername()});
+                    adapter.add(new String[] {newMessage, user.getUsername(), newMessageObject.getObjectId()});
 
                     chatEditText.setText("");
                 }
@@ -142,7 +185,7 @@ public class ClassDiscussionActivity extends ActionBarActivity {
             public void done(List<ParseObject> messages, ParseException e) {
                 for (ParseObject message : messages) {
                     adapter.add(new String[] {message.getString(ParseInterfaceWrapper.KEY_MESSAGE_CONTENTS),
-                            message.getString(ParseInterfaceWrapper.KEY_USERNAME)});
+                            message.getString(ParseInterfaceWrapper.KEY_USERNAME), message.getObjectId()});
                 }
                 listView.setSelection(adapter.getCount() - 1);
 

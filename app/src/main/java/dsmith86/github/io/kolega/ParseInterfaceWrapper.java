@@ -20,6 +20,8 @@ public class ParseInterfaceWrapper {
     public final static String KEY_PROFILE_IMAGE = "profileImage";
     public final static String KEY_MESSAGE_CONTENTS = "contents";
     public final static String KEY_MESSAGE_ORIGIN = "origin";
+    public final static String KEY_REPORTED = "reported";
+    public final static String KEY_OBJECT_ID = "objectId";
 
     public static void registerUser(String username, String password, SignUpCallback callback) {
         ParseUser user = new ParseUser();
