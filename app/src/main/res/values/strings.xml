@@ -86,6 +86,6 @@
     <string name="title_activity_setup">Edit Your Profile</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_school_select">Select your school</string>
-    <string name="title_activity_class_discussion">Pick a class to see discussion</string>
+    <string name="title_activity_class_discussion">Class discussion</string>
 
 </resources>

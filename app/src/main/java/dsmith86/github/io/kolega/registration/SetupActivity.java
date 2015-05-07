@@ -190,30 +190,35 @@ public class SetupActivity extends ActionBarActivity {
 
         user = ParseUser.getCurrentUser();
 
-        String schoolName = user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME).toString();
-        String realName = user.get(ParseInterfaceWrapper.KEY_REAL_NAME).toString();
-        String major = user.get(ParseInterfaceWrapper.KEY_MAJOR).toString();
+        try {
 
-        ParseFile profileImage = (ParseFile)user.get(ParseInterfaceWrapper.KEY_PROFILE_IMAGE);
+            String schoolName = user.get(ParseInterfaceWrapper.KEY_SCHOOL_NAME).toString();
+            String realName = user.get(ParseInterfaceWrapper.KEY_REAL_NAME).toString();
+            String major = user.get(ParseInterfaceWrapper.KEY_MAJOR).toString();
 
-        profileImage.getDataInBackground(new GetDataCallback() {
-            @Override
-            public void done(byte[] bytes, ParseException e) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                profileImageView.setImageBitmap(bitmap);
+            ParseFile profileImage = (ParseFile)user.get(ParseInterfaceWrapper.KEY_PROFILE_IMAGE);
+
+            profileImage.getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] bytes, ParseException e) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    profileImageView.setImageBitmap(bitmap);
+                }
+            });
+
+            if (!schoolName.isEmpty()) {
+                schoolTextView.setText(schoolName);
             }
-        });
 
-        if (!schoolName.isEmpty()) {
-            schoolTextView.setText(schoolName);
-        }
+            if (!realName.isEmpty()) {
+                realNameEditText.setText(realName);
+            }
 
-        if (!realName.isEmpty()) {
-            realNameEditText.setText(realName);
-        }
-
-        if (!major.isEmpty()) {
-            majorEditText.setText(major);
+            if (!major.isEmpty()) {
+                majorEditText.setText(major);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         }
     }
 
