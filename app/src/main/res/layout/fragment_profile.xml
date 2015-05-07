@@ -8,7 +8,7 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="left|top">
+        android:layout_gravity="left|center_vertical">
 
         <ImageView
             android:layout_width="@dimen/size_profile_image"
@@ -19,36 +19,80 @@
             android:contentDescription="@string/description_profile_image"
             android:background="@drawable/avatar" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/label_profile_username"
-            android:id="@+id/realNameTextView"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:layout_gravity="center_horizontal" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_profile_school"
-            android:id="@+id/schoolTextView"
-            android:layout_margin="@dimen/activity_horizontal_margin" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/label_profile_name"
+                android:id="@+id/textView"
+                android:layout_margin="@dimen/activity_horizontal_margin" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_profile_major"
-            android:id="@+id/majorTextView"
-            android:layout_margin="@dimen/activity_horizontal_margin" />
-        
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/realNameTextView"
+                android:layout_margin="@dimen/activity_horizontal_margin" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/label_profile_school"
+                android:id="@+id/textView2"
+                android:layout_margin="@dimen/activity_horizontal_margin" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/schoolTextView"
+                android:layout_margin="@dimen/activity_horizontal_margin" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/label_profile_major"
+                android:id="@+id/textView3"
+                android:layout_margin="@dimen/activity_horizontal_margin" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/majorTextView"
+                android:layout_margin="@dimen/activity_horizontal_margin" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/editProfileButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/button_profile_edit" />
+            android:text="@string/button_profile_edit"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
 </FrameLayout>
